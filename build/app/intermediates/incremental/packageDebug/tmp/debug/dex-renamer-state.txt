@@ -1,0 +1,4 @@
+#Mon Dec 12 10:21:34 EST 2022
+base.0=C\:\\Users\\Alexandre\\ApplicationMobile2\\workout_generator\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

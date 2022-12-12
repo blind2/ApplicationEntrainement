@@ -60,7 +60,7 @@ class CategoryScreen extends StatelessWidget {
                                             CrossAxisAlignment.center,
                                         children: [
                                           const Spacer(),
-                                          const Text("Chest",
+                                          const Text("Categorie",
                                               style: TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 20)),
