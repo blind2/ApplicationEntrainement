@@ -25,6 +25,7 @@ class ExerciceService {
         'CREATE TABLE UserProgress(id INTEGER PRIMARY KEY, date TEXT, weight TEXT, repetition TEXT, exercice_id INTEGER)',
       );
 
+      //Donnée par défaut
       addCategorie(CategorieModel(categorieId: 1, name: "Bicep"));
       addCategorie(CategorieModel(categorieId: 2, name: "Tricep"));
       addCategorie(CategorieModel(categorieId: 3, name: "Chest"));

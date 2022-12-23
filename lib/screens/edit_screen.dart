@@ -48,6 +48,7 @@ class _EditScreen extends State<EditScreen> {
         backgroundColor: Colors.white,
         body: Container(
             width: double.infinity,
+            padding: const EdgeInsets.all(20.0),
             decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("assets/gym.jpg"), fit: BoxFit.fill),

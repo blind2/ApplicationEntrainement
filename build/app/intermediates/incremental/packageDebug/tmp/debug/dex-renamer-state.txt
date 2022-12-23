@@ -1,4 +1,4 @@
-#Thu Dec 22 22:25:04 EST 2022
+#Thu Dec 22 22:33:49 EST 2022
 base.0=C\:\\Users\\Alexandre\\ApplicationMobile2\\ApplicationEntrainement\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 renamed.0=classes.dex
 path.0=classes.dex
