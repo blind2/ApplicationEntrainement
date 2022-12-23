@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 // Define a custom Form widget.
 class DropdownItem extends StatefulWidget {
-  const DropdownItem({super.key});
+  DropdownItem({super.key});
+
+  String selectedValue = "LBS";
 
   @override
   State<DropdownItem> createState() {
@@ -11,8 +13,6 @@ class DropdownItem extends StatefulWidget {
 }
 
 class _DropdownItemState extends State<DropdownItem> {
-  String selectedValue = "LBS";
-
   List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
       const DropdownMenuItem(
@@ -31,18 +31,18 @@ class _DropdownItemState extends State<DropdownItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 2, horizontal: 15),
-      decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 44, 44, 44),
+      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 15),
+      decoration: const BoxDecoration(
+          color: Color.fromARGB(255, 44, 44, 44),
           borderRadius: BorderRadius.all(Radius.circular(10))),
       child: DropdownButtonHideUnderline(
           child: DropdownButton(
         dropdownColor: const Color.fromARGB(255, 44, 44, 44),
-        value: selectedValue,
+        value: widget.selectedValue,
         items: dropdownItems,
         onChanged: (String? newValue) {
           setState(() {
-            selectedValue = newValue!;
+            widget.selectedValue = newValue!;
           });
         },
       )),

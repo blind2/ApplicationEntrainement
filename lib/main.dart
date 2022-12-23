@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:workout_generator/screens/categoryScreen.dart';
+import 'package:workout_generator/screens/category_screen.dart';
 
 void main() {
   runApp(const MyApp());

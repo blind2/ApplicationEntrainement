@@ -1,20 +1,66 @@
 import 'package:flutter/material.dart';
-import 'package:workout_generator/screens/exerciceDetailScreen.dart';
+import 'package:workout_generator/models/categorie_model.dart';
+import 'package:workout_generator/screens/exercice_screen.dart';
+import 'package:workout_generator/services/exercice_service.dart';
 
-class ExerciceScreen extends StatelessWidget {
-  const ExerciceScreen({Key? key}) : super(key: key);
+class CategoryScreen extends StatefulWidget {
+  const CategoryScreen({Key? key}) : super(key: key);
+
+  @override
+  State<CategoryScreen> createState() {
+    return _CategorieScreenState();
+  }
+}
+
+class _CategorieScreenState extends State<CategoryScreen> {
+  late ExerciceService exerciceService = ExerciceService();
+  List<CategorieModel> _categories = [];
+
+  _refreshCategorie() async {
+    final data = await exerciceService.getCategorie();
+    setState(() {
+      _categories = data;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    exerciceService = ExerciceService();
+    exerciceService.init().whenComplete(() async {
+      await _refreshCategorie();
+      setState(() {});
+    });
+  }
+
+  Route _createRoute(int index) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          ExerciceScreen(categorieId: _categories[index].categorieId),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          iconTheme: const IconThemeData(
-            color: Colors.grey,
-          ),
           leadingWidth: 100,
           centerTitle: true,
           title: const Text(
-            'Exercices',
+            'Categorie',
             style: TextStyle(color: Colors.grey, fontSize: 20),
             textAlign: TextAlign.center,
           ),
@@ -34,19 +80,13 @@ class ExerciceScreen extends StatelessWidget {
                       child: ListView.separated(
                           padding: const EdgeInsets.all(20),
                           shrinkWrap: true,
-                          itemCount: 10,
+                          itemCount: _categories.length,
                           separatorBuilder: (context, index) =>
                               const SizedBox(height: 5),
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ExerciceDetailScreen(),
-                                    ),
-                                  );
+                                  Navigator.push(context, _createRoute(index));
                                 },
                                 child: Container(
                                     height: 75,
@@ -64,8 +104,8 @@ class ExerciceScreen extends StatelessWidget {
                                             CrossAxisAlignment.center,
                                         children: [
                                           const Spacer(),
-                                          const Text("Exercice",
-                                              style: TextStyle(
+                                          Text(_categories[index].name,
+                                              style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 20)),
                                           const Spacer(),

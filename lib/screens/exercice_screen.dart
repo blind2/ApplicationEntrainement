@@ -1,17 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:workout_generator/screens/exerciceScreen.dart';
+import 'package:workout_generator/models/categorie_model.dart';
+import 'package:workout_generator/models/exercice_model.dart';
+import 'package:workout_generator/models/user_progress.dart';
+import 'package:workout_generator/screens/user_progress_screen.dart';
 
-class CategoryScreen extends StatelessWidget {
-  const CategoryScreen({Key? key}) : super(key: key);
+import '../services/exercice_service.dart';
+
+class ExerciceScreen extends StatefulWidget {
+  const ExerciceScreen({Key? key, required this.categorieId}) : super(key: key);
+  final int categorieId;
+
+  @override
+  State<ExerciceScreen> createState() {
+    return _ExerciceScreenState();
+  }
+}
+
+class _ExerciceScreenState extends State<ExerciceScreen> {
+  late ExerciceService exerciceService = ExerciceService();
+  List<ExerciceModel> _exercices = [];
+
+  _ExerciceScreenState();
+
+  _refreshExercice() async {
+    final data = await exerciceService.getExercice(widget.categorieId);
+    setState(() {
+      _exercices = data;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    exerciceService = ExerciceService();
+    exerciceService.init().whenComplete(() async {
+      await _refreshExercice();
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          iconTheme: const IconThemeData(
+            color: Colors.grey,
+          ),
           leadingWidth: 100,
           centerTitle: true,
           title: const Text(
-            'Categorie',
+            'Exercices',
             style: TextStyle(color: Colors.grey, fontSize: 20),
             textAlign: TextAlign.center,
           ),
@@ -31,7 +69,7 @@ class CategoryScreen extends StatelessWidget {
                       child: ListView.separated(
                           padding: const EdgeInsets.all(20),
                           shrinkWrap: true,
-                          itemCount: 4,
+                          itemCount: _exercices.length,
                           separatorBuilder: (context, index) =>
                               const SizedBox(height: 5),
                           itemBuilder: (BuildContext context, int index) {
@@ -40,8 +78,10 @@ class CategoryScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ExerciceScreen()),
+                                      builder: (context) => UserProgressScreen(
+                                          exerciceId:
+                                              _exercices[index].id ?? 0),
+                                    ),
                                   );
                                 },
                                 child: Container(
@@ -60,8 +100,8 @@ class CategoryScreen extends StatelessWidget {
                                             CrossAxisAlignment.center,
                                         children: [
                                           const Spacer(),
-                                          const Text("Categorie",
-                                              style: TextStyle(
+                                          Text(_exercices[index].name,
+                                              style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 20)),
                                           const Spacer(),
